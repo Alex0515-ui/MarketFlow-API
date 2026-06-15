@@ -1,112 +1,192 @@
+# 🛒 Market Flow API — Role-Based E-Commerce Backend
 
-# Mini Market API
+A RESTful API for managing users, roles, products, orders, and wallets. Built with NestJS, TypeORM, and PostgreSQL — designed with a clean role separation and a full order lifecycle out of the box.
 
-API for managing users, roles, and wallets. Built with NestJS, TypeORM, and PostgreSQL.
+---
 
+## 📋 Table of Contents
 
-## Installation
+- [About](#about)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Docker](#docker)
+- [Admin Seed](#admin-seed)
+- [User Roles](#user-roles)
+- [Testing](#testing)
+- [Swagger](#swagger)
+- [Environment Variables](#environment-variables)
 
-1. Clone the repository:
+---
+
+## About
+
+Mini Market is a backend platform that simulates a small marketplace — users can register, browse products, place orders, and manage their wallets. Sellers list products, admins oversee the platform.
+
+### Key Features
+
+- **Role System** — three distinct roles: `USER`, `SELLER`, `ADMIN`, each with scoped access
+- **Product Management** — sellers can create and manage their listings
+- **Order Lifecycle** — users place orders, track status, and manage purchases
+- **Wallet System** — built-in balance management per user
+- **JWT Authentication** — secure token-based auth with configurable expiry
+- **Admin Seeding** — one-command admin account setup for initial configuration
+- **Swagger Docs** — interactive API documentation included
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| NestJS | Backend framework |
+| TypeORM | ORM and database interaction |
+| PostgreSQL | Primary database |
+| JWT | Authentication |
+| Docker & Docker Compose | Containerization |
+| Jest | Unit and E2E testing |
+
+---
+
+## Quick Start
+
+### Requirements
+
+- Docker and Docker Compose, or Node.js (for local development)
+- PostgreSQL instance
+
+### 1. Clone the Repository
 
 ```bash
-git clone (repo_url)
+git clone <repo_url>
 cd mini_market
 ```
 
-2. Install dependencies:
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-3. Create a `.env` file (or `.env.example` for a template) with your environment variables:
+### 3. Configure Environment Variables
+
+```bash
+cp .env.example .env
+```
+
+Fill in your values:
 
 ```env
 PORT=3000
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD=alihan2007
+DB_PASSWORD=your_password
 DB_NAME=mini_market
 JWT_SECRET_KEY=your_secret_key
 JWT_EXPIRE_IN=1d
 ```
 
-## Docker 
+---
 
-Run the project using Docker:
+## Docker
+
+The recommended way to run the project:
 
 ```bash
 docker-compose up -d
 ```
 
-Containers:
+| Service | Port |
+|---|---|
+| API | 3000 |
+| PostgreSQL | 5432 |
 
-API — port 3000
-PostgreSQL — port 5432
+> ⚠️ If running locally, make sure no other process is occupying port 3000.
 
+---
 
 ## Admin Seed
 
-To create an admin user manually:
+To bootstrap an admin account:
+
 ```bash
 npm run seed:admin
 ```
 
-This will create a user with the following credentials:
+This creates a user with the following credentials:
 
-name: admin
-password: 123456
-role: ADMIN
+| Field | Value |
+|---|---|
+| Name | admin |
+| Password | 123456 |
+| Role | ADMIN |
 
-> **Note** Regular user registration defaults to `USER` role. No one can become an admin by passing a role in registration.
+> **Note:** Regular registration always defaults to the `USER` role. There is no way to self-assign `ADMIN` through the registration endpoint — this is intentional.
 
 ---
 
-## Local Development
+## User Roles
 
-Run the project locally:
+| Role | Description |
+|---|---|
+| `USER` | Regular customer — can browse products and place orders |
+| `SELLER` | Can create and manage product listings |
+| `ADMIN` | Full platform access and user management |
 
-```bash
-cd mini_market
-npm run start:dev
-```
+---
 
-API will be available at `http://localhost:3000`.
+## Testing
 
-Make sure no other process (like Docker) is using port 3000 if running locally.
-
-
-##  Testing
-
-* Unit tests:
+Unit tests:
 
 ```bash
 npm run test
 ```
 
-* End-to-end tests:
+End-to-end tests:
+
 ```bash
 npm run test:e2e
 ```
 
-
-##  User Roles
-
-
- USER - Regular user                 
- ADMIN - Administrator                
- SELLER - Seller  
-
 ---
 
 ## Swagger
-Available on "http://localhost:3000/api/docs"
+
+Interactive API documentation is available at:
+
+```
+http://localhost:3000/api/docs
+```
+
+---
+
+## Environment Variables
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=mini_market
+JWT_SECRET_KEY=your_secret_key
+JWT_EXPIRE_IN=1d
+```
+
+> ⚠️ Never commit real credentials to `.env.example`. Keep secrets out of version control.
+
+---
 
 ## Tips
 
-* For security, do not store real passwords in `.env.example`.
-* Admin seed is only required once; you can remove the seed script after first run or leave it for testing.
-* Docker ensures the same environment on all machines.
+- Admin seed only needs to run once — you can remove the script afterward or keep it for testing environments.
+- Docker guarantees a consistent environment across all machines.
+- JWT expiry is configurable via `JWT_EXPIRE_IN` — adjust based on your security requirements.
 
+---
 
+## License
+
+MIT License
